@@ -41,6 +41,32 @@
       box-shadow: 0 8px 32px rgba(0,0,0,0.10);
     }
 
+    .cover-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    }
+    .cover-img { width: 100%; display: block; }
+    .cover-btn-wrap { padding: 20px 24px 24px; }
+
+    .btn-start {
+      width: 100%;
+      padding: 18px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #f97316, #ef4444);
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      letter-spacing: 2px;
+      box-shadow: 0 4px 16px rgba(239,68,68,0.35);
+    }
+    .btn-start:hover { opacity: 0.9; }
+    .btn-start:active { transform: scale(0.97); opacity: 0.85; }
+
     .progress-wrap { margin-bottom: 20px; }
     .progress-label { display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8; margin-bottom: 6px; }
     .progress-bar-bg { background: #e0f2fe; border-radius: 99px; height: 6px; }
@@ -133,7 +159,15 @@
     <p>3〜5問で診断できます</p>
   </div>
 
-  <div class="card">
+  <!-- カバー画面 -->
+  <div class="cover-card screen active" id="cover">
+    <img src="2.png" alt="証券会社診断" class="cover-img">
+    <div class="cover-btn-wrap">
+      <button class="btn-start" onclick="startDiagnosis()">スタート！ 🚀</button>
+    </div>
+  </div>
+
+  <div class="card" id="quiz-card" style="display:none;">
 
     <!-- Q1 -->
     <div class="screen active" id="q1">
@@ -295,16 +329,25 @@
 </div>
 
 <script>
+  function startDiagnosis() {
+    document.getElementById('cover').classList.remove('active');
+    document.getElementById('cover').style.display = 'none';
+    document.getElementById('quiz-card').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
   function next(targetId, btn) {
     btn.classList.add('selected');
     setTimeout(() => {
-      document.querySelector('.screen.active').classList.remove('active');
+      document.querySelector('#quiz-card .screen.active').classList.remove('active');
       document.getElementById(targetId).classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 200);
   }
   function restart() {
-    document.querySelector('.screen.active').classList.remove('active');
+    document.querySelector('#quiz-card .screen.active').classList.remove('active');
+    document.getElementById('cover').style.display = 'block';
+    document.getElementById('cover').classList.add('active');
+    document.getElementById('quiz-card').style.display = 'none';
     document.getElementById('q1').classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
