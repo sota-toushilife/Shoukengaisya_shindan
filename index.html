@@ -6,119 +6,345 @@
   <title>あなたに合う証券会社診断</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif; background: linear-gradient(160deg, #bae6fd 0%, #e0f2fe 60%, #f0f9ff 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+
+    body {
+      font-family: -apple-system, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      background: linear-gradient(160deg, #bae6fd 0%, #e0f2fe 60%, #f0f9ff 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
     .container { width: 100%; max-width: 420px; }
-    .quiz-header-img { display: block; width: calc(100% + 48px); margin: -28px -24px 20px -24px; }
-    .card { background: white; border-radius: 20px; padding: 28px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.10); overflow: hidden; }
-    .cover-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.10); }
+
+    /* クイズヘッダー画像 */
+    .quiz-header-img {
+      display: block;
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 0 auto 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      overflow: hidden;
+    }
+
+    .cover-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+    }
     .cover-img { width: 100%; display: block; }
     .cover-btn-wrap { padding: 20px 24px 24px; }
-    .btn-start { width: 100%; padding: 18px; border-radius: 14px; border: none; background: linear-gradient(135deg, #f97316, #ef4444); color: white; font-size: 20px; font-weight: bold; cursor: pointer; transition: all 0.15s ease; letter-spacing: 2px; box-shadow: 0 4px 16px rgba(239,68,68,0.35); }
+
+    .btn-start {
+      width: 100%;
+      padding: 18px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #f97316, #ef4444);
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      letter-spacing: 2px;
+      box-shadow: 0 4px 16px rgba(239,68,68,0.35);
+    }
+    .btn-start:hover { opacity: 0.9; }
     .btn-start:active { transform: scale(0.97); opacity: 0.85; }
+
     .progress-wrap { margin-bottom: 20px; }
     .progress-label { display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8; margin-bottom: 6px; }
     .progress-bar-bg { background: #e0f2fe; border-radius: 99px; height: 6px; }
     .progress-bar { background: linear-gradient(90deg, #38bdf8, #0284c7); height: 6px; border-radius: 99px; transition: width 0.4s ease; }
+
     .question-emoji { font-size: 36px; text-align: center; margin-bottom: 12px; }
     .question-text { font-size: 18px; font-weight: bold; color: #0c4a6e; text-align: center; line-height: 1.5; margin-bottom: 24px; }
+
     .btn-wrap { display: flex; flex-direction: column; gap: 12px; }
-    .btn { width: 100%; padding: 16px 20px; border-radius: 14px; border: 2px solid #bae6fd; background: #f0f9ff; color: #0369a1; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.15s ease; text-align: center; -webkit-tap-highlight-color: transparent; }
+    .btn {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 14px;
+      border: 2px solid #bae6fd;
+      background: #f0f9ff;
+      color: #0369a1;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:hover { background: #e0f2fe; border-color: #38bdf8; }
     .btn:active { transform: scale(0.96); background: #bae6fd; border-color: #0284c7; }
     .btn.selected { background: #0284c7; color: white; border-color: #0284c7; transform: scale(0.97); }
+
     .result-icon { font-size: 48px; text-align: center; margin-bottom: 12px; }
     .result-label { text-align: center; font-size: 12px; color: #64748b; margin-bottom: 6px; letter-spacing: 1px; }
     .result-name { text-align: center; font-size: 26px; font-weight: bold; margin-bottom: 16px; }
     .result-name.rakuten { color: #dc2626; }
     .result-name.sbi { color: #2563eb; }
-    .result-desc { background: #f0f9ff; border-radius: 12px; padding: 16px; font-size: 14px; color: #334155; line-height: 1.7; margin-bottom: 20px; }
+
+    .result-desc {
+      background: #f0f9ff;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 14px;
+      color: #334155;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
     .result-desc ul { padding-left: 16px; }
     .result-desc li { margin-bottom: 6px; }
-    .btn-primary { width: 100%; padding: 16px; border-radius: 14px; border: none; background: linear-gradient(135deg, #38bdf8, #0284c7); color: white; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.15s ease; margin-bottom: 10px; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      border-radius: 14px;
+      border: none;
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      margin-bottom: 10px;
+    }
     .btn-primary:active { transform: scale(0.97); opacity: 0.9; }
-    .btn-restart { width: 100%; padding: 14px; border-radius: 14px; border: 2px solid #bae6fd; background: white; color: #0369a1; font-size: 14px; font-weight: bold; cursor: pointer; }
+
+    .btn-restart {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px solid #bae6fd;
+      background: white;
+      color: #0369a1;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
     .btn-restart:active { transform: scale(0.97); background: #f0f9ff; }
+
     .screen { display: none; animation: fadeIn 0.3s ease; }
     .screen.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .divider { height: 1px; background: #e0f2fe; margin: 20px 0; }
   </style>
 </head>
 <body>
 <div class="container">
+  <!-- カバー画面 -->
   <div class="cover-card screen active" id="cover">
     <img src="2.png" alt="証券会社診断" class="cover-img">
-    <div class="cover-btn-wrap"><button class="btn-start" onclick="startDiagnosis()">スタート！ 🚀</button></div>
+    <div class="cover-btn-wrap">
+      <button class="btn-start" onclick="startDiagnosis()">スタート！ 🚀</button>
+    </div>
   </div>
+
   <div class="card" id="quiz-card" style="display:none;">
-    <img src="証券口座診断中.png" alt="証券会社診断" class="quiz-header-img">
+    <img src="2正方形.png" alt="証券会社診断" class="quiz-header-img">
+
+    <!-- Q1 -->
     <div class="screen active" id="q1">
-      <div class="progress-wrap"><div class="progress-label"><span>Q1</span><span>1 / 最大5問</span></div><div class="progress-bar-bg"><div class="progress-bar" style="width:20%"></div></div></div>
-      <div class="question-emoji">🛒</div><div class="question-text">楽天市場を<br>よく利用する？</div>
-      <div class="btn-wrap"><button class="btn" onclick="next('q2a', this)">✅ する</button><button class="btn" onclick="next('q2b', this)">❌ しない</button></div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Q1</span><span>1 / 最大5問</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar" style="width:20%"></div></div>
+      </div>
+      <div class="question-emoji">🛒</div>
+      <div class="question-text">楽天市場を<br>よく利用する？</div>
+      <div class="btn-wrap">
+        <button class="btn" onclick="next('q2a', this)">✅ する</button>
+        <button class="btn" onclick="next('q2b', this)">❌ しない</button>
+      </div>
     </div>
+
+    <!-- Q2a -->
     <div class="screen" id="q2a">
-      <div class="progress-wrap"><div class="progress-label"><span>Q2</span><span>2 / 最大5問</span></div><div class="progress-bar-bg"><div class="progress-bar" style="width:40%"></div></div></div>
-      <div class="question-emoji">🦅</div><div class="question-text">楽天ポイントを<br>一番貯めてる？</div>
-      <div class="btn-wrap"><button class="btn" onclick="next('q3a', this)">✅ 貯めてる</button><button class="btn" onclick="next('q3b', this)">🤔 一番ではないかな</button><button class="btn" onclick="next('q3c', this)">❌ 貯めてない</button></div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Q2</span><span>2 / 最大5問</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar" style="width:40%"></div></div>
+      </div>
+      <div class="question-emoji">🦅</div>
+      <div class="question-text">楽天ポイントを<br>一番貯めてる？</div>
+      <div class="btn-wrap">
+        <button class="btn" onclick="next('q3a', this)">✅ 貯めてる</button>
+        <button class="btn" onclick="next('q3b', this)">🤔 一番ではないかな</button>
+        <button class="btn" onclick="next('q3c', this)">❌ 貯めてない</button>
+      </div>
     </div>
+
+    <!-- Q3a -->
     <div class="screen" id="q3a">
-      <div class="progress-wrap"><div class="progress-label"><span>Q3</span><span>3 / 最大5問</span></div><div class="progress-bar-bg"><div class="progress-bar" style="width:60%"></div></div></div>
-      <div class="question-emoji">💰</div><div class="question-text">楽天ポイントを<br>投資に活用したい？</div>
-      <div class="btn-wrap"><button class="btn" onclick="next('result_rakuten', this)">✅ してみたい</button><button class="btn" onclick="next('result_sbi', this)">😐 別に気にしない</button></div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Q3</span><span>3 / 最大5問</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar" style="width:60%"></div></div>
+      </div>
+      <div class="question-emoji">💰</div>
+      <div class="question-text">楽天ポイントを<br>投資に活用したい？</div>
+      <div class="btn-wrap">
+        <button class="btn" onclick="next('result_rakuten', this)">✅ してみたい</button>
+        <button class="btn" onclick="next('result_sbi', this)">😐 別に気にしない</button>
+      </div>
     </div>
+
+    <!-- Q3b -->
     <div class="screen" id="q3b">
-      <div class="progress-wrap"><div class="progress-label"><span>Q3</span><span>3 / 最大5問</span></div><div class="progress-bar-bg"><div class="progress-bar" style="width:60%"></div></div></div>
-      <div class="question-emoji">💳</div><div class="question-text">クレカ積立も<br>利用したい？</div>
-      <div class="btn-wrap"><button class="btn" onclick="next('q4', this)">✅ したい</button><button class="btn" onclick="next('q_easy', this)">❌ したくない</button></div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Q3</span><span>3 / 最大5問</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar" style="width:60%"></div></div>
+      </div>
+      <div class="question-emoji">💳</div>
+      <div class="question-text">クレカ積立も<br>利用したい？</div>
+      <div class="btn-wrap">
+        <button class="btn" onclick="next('q4', this)">✅ したい</button>
+        <button class="btn" onclick="next('q_easy', this)">❌ したくない</button>
+      </div>
     </div>
+
+    <!-- Q3c -->
     <div class="screen" id="q3c">
-      <div class="progress-wrap"><div class="progress-label"><span>Q3</span><span>3 / 最大5問</span></div><div class="progress-bar-bg"><div class="progress-bar" style="width:60%"></div></div></div>
-      <div class="question-emoji">📈</div><div class="question-text">月10万円以上<br>投資する予定？</div>
-      <div class="btn-wrap"><button class="btn" onclick="next('result_rakuten', this)">✅ するかも</button><button class="btn" onclick="next('q_easy', this)">❌ しない</button></div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Q3</span><span>3 / 最大5問</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar" style="width:60%"></div></div>
+      </div>
+      <div class="question-emoji">📈</div>
+      <div class="question-text">月10万円以上<br>投資する予定？</div>
+      <div class="btn-wrap">
+        <button class="btn" onclick="next('result_rakuten', this)">✅ するかも</button>
+        <button class="btn" onclick="next('q_easy', this)">❌ しない</button>
+      </div>
     </div>
+
+    <!-- Q2b -->
     <div class="screen" id="q2b">
-      <div class="progress-wrap"><div class="progress-label"><span>Q2</span><span>2 / 最大5問</span></div><div class="progress-bar-bg"><div class="progress-bar" style="width:40%"></div></div></div>
-      <div class="question-emoji">💳</div><div class="question-text">クレカ積立も<br>利用したい？</div>
-      <div class="btn-wrap"><button class="btn" onclick="next('q4', this)">✅ したい</button><button class="btn" onclick="next('q_easy', this)">🤔 まだわからない</button></div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Q2</span><span>2 / 最大5問</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar" style="width:40%"></div></div>
+      </div>
+      <div class="question-emoji">💳</div>
+      <div class="question-text">クレカ積立も<br>利用したい？</div>
+      <div class="btn-wrap">
+        <button class="btn" onclick="next('q4', this)">✅ したい</button>
+        <button class="btn" onclick="next('q_easy', this)">🤔 まだわからない</button>
+      </div>
     </div>
+
+    <!-- Q4 -->
     <div class="screen" id="q4">
-      <div class="progress-wrap"><div class="progress-label"><span>Q4</span><span>4 / 最大5問</span></div><div class="progress-bar-bg"><div class="progress-bar" style="width:80%"></div></div></div>
-      <div class="question-emoji">💸</div><div class="question-text">クレカで<br>年100万円以上使う？</div>
-      <div class="btn-wrap"><button class="btn" onclick="next('result_sbi', this)">✅ 使いそう</button><button class="btn" onclick="next('q_easy', this)">❌ 使わない</button></div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Q4</span><span>4 / 最大5問</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar" style="width:80%"></div></div>
+      </div>
+      <div class="question-emoji">💸</div>
+      <div class="question-text">クレカで<br>年100万円以上使う？</div>
+      <div class="btn-wrap">
+        <button class="btn" onclick="next('result_sbi', this)">✅ 使いそう</button>
+        <button class="btn" onclick="next('q_easy', this)">❌ 使わない</button>
+      </div>
     </div>
+
+    <!-- Q_easy -->
     <div class="screen" id="q_easy">
-      <div class="progress-wrap"><div class="progress-label"><span>最後の質問</span><span>あと1問！</span></div><div class="progress-bar-bg"><div class="progress-bar" style="width:90%"></div></div></div>
-      <div class="question-emoji">📱</div><div class="question-text">証券アプリの<br>わかりやすさを重視する？</div>
-      <div class="btn-wrap"><button class="btn" onclick="next('result_rakuten', this)">✅ 重視する</button><button class="btn" onclick="next('result_sbi', this)">😐 特に気にしない</button></div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>最後の質問</span><span>あと1問！</span></div>
+        <div class="progress-bar-bg"><div class="progress-bar" style="width:90%"></div></div>
+      </div>
+      <div class="question-emoji">📱</div>
+      <div class="question-text">証券アプリの<br>わかりやすさを重視する？</div>
+      <div class="btn-wrap">
+        <button class="btn" onclick="next('result_rakuten', this)">✅ 重視する</button>
+        <button class="btn" onclick="next('result_sbi', this)">😐 特に気にしない</button>
+      </div>
     </div>
+
+    <!-- Result: 楽天証券 -->
     <div class="screen" id="result_rakuten">
-      <div class="progress-wrap"><div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div></div>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
+      </div>
       <div style="height:16px"></div>
-      <div class="result-icon">🎉</div><div class="result-label">あなたに合う証券会社は</div>
+      <div class="result-icon">🎉</div>
+      <div class="result-label">あなたに合う証券会社は</div>
       <div class="result-name rakuten">楽天証券</div>
-      <div class="result-desc"><ul><li>楽天ポイントをそのまま投資に使える</li><li>アプリが見やすくて初心者でも安心</li><li>楽天経済圏をフル活用できる</li></ul></div>
+      <div class="result-desc">
+        <ul>
+          <li>楽天ポイントをそのまま投資に使える</li>
+          <li>アプリが見やすくて初心者でも安心</li>
+          <li>楽天経済圏をフル活用できる</li>
+        </ul>
+      </div>
       <div class="divider"></div>
       <button class="btn-primary" onclick="openLink('https://account.rakuten-sec.co.jp/ApplicationTop/introduceFriend.do?introClientCd=GzfHrdOvjrc%3D&hash=85666fb8f206334d9c529e363aa1cc34&introBranchCd=%2FKsvUSSTkts%3D&routeKey=SEC01001&urlSendDt=MFW9f3VzapkH9UBAaAOoYA%3D%3D&sendSnsKbn=1')">楽天証券の口座開設はこちら →</button>
       <p style="font-size:10px;color:#b0bec5;text-align:center;margin-top:6px;">※紹介プログラムを利用しています（PR）</p>
       <button class="btn-restart" onclick="restart()">もう一度診断する</button>
     </div>
+
+    <!-- Result: SBI -->
     <div class="screen" id="result_sbi">
-      <div class="progress-wrap"><div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div></div>
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar" style="width:100%"></div></div>
+      </div>
       <div style="height:16px"></div>
-      <div class="result-icon">🎉</div><div class="result-label">あなたに合う証券会社は</div>
+      <div class="result-icon">🎉</div>
+      <div class="result-label">あなたに合う証券会社は</div>
       <div class="result-name sbi">SBI証券</div>
-      <div class="result-desc"><ul><li>ネット証券No.1の口座数で安心感◎</li><li>三井住友カードでクレカ積立がお得</li><li>取扱商品が豊富で長く使える</li></ul></div>
+      <div class="result-desc">
+        <ul>
+          <li>ネット証券No.1の口座数で安心感◎</li>
+          <li>三井住友カードでクレカ積立がお得</li>
+          <li>取扱商品が豊富で長く使える</li>
+        </ul>
+      </div>
       <div class="divider"></div>
       <button class="btn-primary" onclick="openLink('https://www.sbisec.co.jp/')">SBI証券の口座開設はこちら →</button>
       <button class="btn-restart" onclick="restart()">もう一度診断する</button>
     </div>
+
   </div>
 </div>
+
 <script>
-  function startDiagnosis(){document.getElementById('cover').classList.remove('active');document.getElementById('cover').style.display='none';document.getElementById('quiz-card').style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
-  function next(t,b){b.classList.add('selected');setTimeout(()=>{document.querySelector('#quiz-card .screen.active').classList.remove('active');document.getElementById(t).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});},200);}
-  function restart(){document.querySelector('#quiz-card .screen.active').classList.remove('active');document.getElementById('cover').style.display='block';document.getElementById('cover').classList.add('active');document.getElementById('quiz-card').style.display='none';document.getElementById('q1').classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
-  function openLink(u){window.open(u,'_blank');}
+  function startDiagnosis() {
+    document.getElementById('cover').classList.remove('active');
+    document.getElementById('cover').style.display = 'none';
+    document.getElementById('quiz-card').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function next(targetId, btn) {
+    btn.classList.add('selected');
+    setTimeout(() => {
+      document.querySelector('#quiz-card .screen.active').classList.remove('active');
+      document.getElementById(targetId).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 200);
+  }
+  function restart() {
+    document.querySelector('#quiz-card .screen.active').classList.remove('active');
+    document.getElementById('cover').style.display = 'block';
+    document.getElementById('cover').classList.add('active');
+    document.getElementById('quiz-card').style.display = 'none';
+    document.getElementById('q1').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function openLink(url) {
+    window.open(url, '_blank');
+  }
 </script>
 </body>
 </html>
